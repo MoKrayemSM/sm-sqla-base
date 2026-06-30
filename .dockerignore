@@ -1,0 +1,4 @@
+# Keep the build context tiny: only the Dockerfile + the one tarball matter.
+*
+!Dockerfile
+!sqla17_client_linux_x86x64.tar.gz

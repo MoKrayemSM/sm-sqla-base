@@ -1,0 +1,4 @@
+# The proprietary SQL Anywhere 17 client tarball is NOT committed.
+# Obtain it from the internal artifact store (see README) and place it here.
+sqla17_client_linux_x86x64.tar.gz
+*.tar.gz
