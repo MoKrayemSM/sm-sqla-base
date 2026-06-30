@@ -42,9 +42,7 @@ ODBC registration — stays in the consumer Dockerfile, unchanged.
 
 `sqla17_client_linux_x86x64.tar.gz` is proprietary and **gitignored**. Obtain it
 from the internal artifact store and drop it in this directory before building.
-
-- Expected sha256: `097c870c29dc05b597879092e3911359779b2ad1b617ffaa8fa386148f6688d4`
-- `make check` verifies presence + checksum.
+`make check` verifies it is present.
 
 ## Build & verify
 

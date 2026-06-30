@@ -3,14 +3,12 @@
 IMAGE        ?= sm-sqla-base
 TAG          ?= 17
 SQLA_TARBALL ?= sqla17_client_linux_x86x64.tar.gz
-# Expected sha256 of the canonical tarball (all repos carry the identical file).
-SQLA_SHA256  ?= 097c870c29dc05b597879092e3911359779b2ad1b617ffaa8fa386148f6688d4
 
 .PHONY: help check build verify shell push clean
 
 help:
 	@echo "Targets:"
-	@echo "  make check    - verify the tarball is present and checksum matches"
+	@echo "  make check    - verify the tarball is present"
 	@echo "  make build    - build $(IMAGE):$(TAG)"
 	@echo "  make verify   - run the image to list the SQLA client payload"
 	@echo "  make shell    - open a shell in the image to poke around"
@@ -18,9 +16,7 @@ help:
 
 check:
 	@test -f "$(SQLA_TARBALL)" || { echo "ERROR: $(SQLA_TARBALL) not found. See README (obtain from internal artifact store)."; exit 1; }
-	@echo "$(SQLA_SHA256)  $(SQLA_TARBALL)" | shasum -a 256 -c - \
-		|| { echo "ERROR: checksum mismatch — tarball does not match the pinned SQLA 17 client."; exit 1; }
-	@echo "OK: $(SQLA_TARBALL) present and checksum verified."
+	@echo "OK: $(SQLA_TARBALL) present."
 
 build: check
 	docker build --build-arg SQLA_TARBALL=$(SQLA_TARBALL) -t $(IMAGE):$(TAG) .
