@@ -1,7 +1,7 @@
 # sm-sqla-base — build & verify the shared SQL Anywhere 17 client image.
 
 IMAGE        ?= sm-sqla-base
-TAG          ?= 17
+TAG          ?= 17-bookworm
 SQLA_TARBALL ?= sqla17_client_linux_x86x64.tar.gz
 
 .PHONY: help check build verify shell push clean
