@@ -31,10 +31,10 @@ In each service's Dockerfile, delete the local `sqla-installer` stage and
 replace the copy line with:
 
 ```dockerfile
-COPY --from=sm-sqla-base:17 /opt/sqlanywhere17 /opt/sqlanywhere17
+COPY --from=sm-sqla-base:17-bookworm /opt/sqlanywhere17 /opt/sqlanywhere17
 ```
 
-(Under Jenkins/Harbor this becomes `--from=<registry>/sm-sqla-base:17`.)
+(Under Jenkins/Harbor this becomes `--from=<registry>/sm-sqla-base:17-bookworm`.)
 Everything downstream — `SQLANY17`, `LD_LIBRARY_PATH`, the node-gyp build or the
 ODBC registration — stays in the consumer Dockerfile, unchanged.
 
@@ -48,7 +48,7 @@ from the internal artifact store and drop it in this directory before building.
 
 ```bash
 make check     # tarball present and checksum matches
-make build     # builds sm-sqla-base:17
+make build     # builds sm-sqla-base:17-bookworm
 make verify    # runs the image; lists /opt/sqlanywhere17 (lib64, res)
 make shell     # poke around interactively
 ```
@@ -58,7 +58,7 @@ if the driver has unresolved shared-lib dependencies.
 
 ## Migration order
 
-1. Build & push `sm-sqla-base:17` (this repo).
+1. Build & push `sm-sqla-base:17-bookworm` (this repo).
 2. Repoint all 6 service Dockerfiles to `COPY --from` it; rebuild each to confirm
    parity (the 5 binding apps + SmAttachments' ODBC path).
 3. Drop the now-redundant tarball copies from the other build contexts.

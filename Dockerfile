@@ -16,19 +16,19 @@
 # So every consumer just does, in its own Dockerfile, ONE line instead of a
 # whole sqla-installer stage:
 #
-#   COPY --from=sm-sqla-base:17 /opt/sqlanywhere17 /opt/sqlanywhere17
+#   COPY --from=sm-sqla-base:17-bookworm /opt/sqlanywhere17 /opt/sqlanywhere17
 #
 # and then layers ITS OWN mechanism (node binding OR ODBC) on top.
 #
 # Build:
 #   docker build --build-arg SQLA_TARBALL=sqla17_client_linux_x86x64.tar.gz \
-#                -t sm-sqla-base:17 .
+#                -t sm-sqla-base:17-bookworm .
 # (or: make build)
 
 # ───────────────────────────── Stage 1: install + prune ─────────────────────────────
-# bullseye (glibc 2.31, Debian 11) matches the node:20-bullseye(-slim) bases the
+# bookworm (glibc 2.36, Debian 12) matches the node:20-bookworm(-slim) bases the
 # consumer apps run on, so the driver .so files are ABI-compatible downstream.
-FROM debian:bullseye-slim AS installer
+FROM debian:bookworm-slim AS installer
 
 ARG SQLA_TARBALL=sqla17_client_linux_x86x64.tar.gz
 ARG SQLA_DIR=/opt/sqlanywhere17
@@ -58,7 +58,7 @@ RUN cd ${SQLA_DIR} && \
 # ───────────────────────────── Stage 2: artifact image ─────────────────────────────
 # Minimal final image whose ONLY payload is the pruned client. Consumers pull it
 # with `COPY --from`; nothing here ever runs as a container in production.
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ARG SQLA_DIR=/opt/sqlanywhere17
 ENV SQLANY17=${SQLA_DIR} \
